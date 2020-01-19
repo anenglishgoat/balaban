@@ -12,7 +12,7 @@ class bosko:
         self.models = []
         self.labels = []
         
-    def add_model(self,a,b,type,name):
+    def add_model(self,a,b,model_type,name):
         from balaban.utils import estimate_model
         import numpy as np
         if isinstance(a, str):
@@ -21,7 +21,7 @@ class bosko:
             b = self.df[b]
         a = np.array(a)
         b = np.array(b)
-        new_model = estimate_model(a,b,type)
+        new_model = estimate_model(a,b,model_type)
         self.models.append(new_model)
         self.labels.append(name)
 
