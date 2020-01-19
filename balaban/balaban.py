@@ -36,7 +36,7 @@ class bosko:
         which_mod = np.min(np.where(np.array(self.labels) == name)[0])
         return self.models[which_mod]
         
-    def make_plot(self,player_query,model_names=None,use_pretty_font=True,dpi = 125):
+    def make_plot(self, player_query, subtit_text, model_names=None, use_pretty_font=True, dpi = 125):
         import matplotlib.pyplot as plt
         import matplotlib.font_manager as fm
         import matplotlib
@@ -104,7 +104,7 @@ class bosko:
         ax.plot(np.linspace(0,2 * np.pi,200),np.ones(200),c = 'gray', alpha = 0.5)
 
         fig.suptitle(player_list[pl] + ' (' + team_list[pl] + '), ' + self.league_season_string,y=1.04,fontsize = 10,fontproperties=fp_title)
-        tit = ax.set_title('Passing metrics; 90s played: ' + str(mins_played[pl] / 90), fontsize = 9, y = 1.1,fontproperties=fp_subtitle)
+        tit = ax.set_title(subtit_text + '; 90s played: ' + str(mins_played[pl] / 90), fontsize = 9, y = 1.1,fontproperties=fp_subtitle)
         theta = np.pi / 2 + np.arange(n_bars) * 2 * np.pi /n_bars
         theta_lower = np.pi / 2 + np.arange(n_bars) * 2 * np.pi /n_bars + np.pi / 20
         rotations = np.rad2deg(theta) - 90 - 180 * ((theta > np.pi) & (theta < 2 * np.pi))

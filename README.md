@@ -122,9 +122,10 @@ bos.add_model(a,b,model_type,model_name)
 
 Once all of the models you're interested in have been estimated, you can plot the results using
 ```
-bos.make_plot(query_player,model_names,use_pretty_font)
+bos.make_plot(query_player,subtit_text,model_names,use_pretty_font)
 ```
   * `query_player` is a character string
+  * `subtit_text` is a character string defining the first part of the plot subtitle. It goes where 'Passing metrics' appears on the Merino plot.
   * `model_names` is an (optional) list of models to plot. Defaults to all of them.
   * `use_pretty_font` is an (optional) Boolean telling me whether you want to use the nice font in the example above (`True`) or
   the matplotlib default font (`False`). Defaults to `True`.
