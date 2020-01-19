@@ -94,10 +94,10 @@ bos.add_model(a,b,model_type,model_name)
     - if `model_type == 'count'`, `b` is the total number of minutes played
   * `'success_rate'`
     - estimate a hierarchical Binomial model. Suitable for success rate metrics.
-    - if `model_type == 'success_rate'`, `a` is the total number of *successful* actions (goals, passes, etc.)
-    - if `model_type == 'success_rate'`, `b` is the total number of *attempted* actions (shots, passes, etc.)
+    - if `model_type == 'success_rate'`, `a` is the total number of *successful* actions (goals, completed passes, etc.)
+    - if `model_type == 'success_rate'`, `b` is the total number of *attempted* actions (shots, attempted passes, etc.)
   * `'xSpA'`
-    - estimate a hierarchical Beta model. Suitable for success rate metrics.
+    - estimate a hierarchical Beta model. Suitable for expected success metrics per required action.
     - if `model_type == 'xSpA'`, `a` is the total expected successful actions (e.g., xA, xG)
     - if `model_type == 'xSpA'`, `b` is the total number of *attempted* corresponding actions (e.g., key passes, shots)
   * `'xSp90'`
