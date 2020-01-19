@@ -35,7 +35,7 @@ class bosko:
         which_mod = np.min(np.where(self.labels == name)[0])
         return self.models[which_mod]
         
-    def make_plot(self,player_query,use_pretty_font=True,dpi = 125):
+    def make_plot(self,player_query,model_names=None,use_pretty_font=True,dpi = 125):
         import matplotlib.pyplot as plt
         import matplotlib.font_manager as fm
         import matplotlib
@@ -66,8 +66,14 @@ class bosko:
         player_list = np.array(self.df['Player'])
         team_list = np.array(self.df['Squad'])
         mins_played = np.array(self.df['Minutes'])
-        models = self.models
-        labels = self.labels
+        
+        if model_names is not None:
+            which_mods = np.array([np.min(np.where(self.labels == name)[0]) for name in model_names])
+            models = self.models[which_mods]
+            labels = self.labels[which_mods]
+        else:
+            models = self.models
+            labels = self.labels
 
         pl = np.where(player_list == player_query)[0][0]
         n_bars = len(models)
