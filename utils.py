@@ -68,7 +68,7 @@ def fit_successes_model(successes,attempts):
 
 
 
-def fit_expected_successes_per_action_model(sp,attempts):
+def fit_expected_successes_per_action_model(xS,attempts):
   ## estimates a hierarchical binomial model for success rate data
   ## takes as input:
   ##      sp, a numpy array of shape (num_players,) containing the expected successes per action for each player (e.g. xG per shot, xA per KP)
@@ -81,9 +81,9 @@ def fit_expected_successes_per_action_model(sp,attempts):
   ##      kk, boolean indicating which players have actually registered non-zero expected successes
   import numpy as np
   import pymc3 as pm
-  kk = (attempts > 0) & (sp > 0)
+  kk = (attempts > 0) & (xS > 0)
   attempts = attempts[kk]
-  sp = sp[kk]
+  sp = xS[kk] / attempts[kk]
   N = attempts.shape[0]
 
   with pm.Model() as model:
