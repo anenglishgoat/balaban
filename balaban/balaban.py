@@ -30,9 +30,10 @@ class bosko:
         which_mod = np.min(np.where(self.labels == name)[0])
         del self.models[which_mod]
         del self.labels[which_mod]
+
     def get_model(self,name):
         import numpy as np
-        which_mod = np.min(np.where(self.labels == name)[0])
+        which_mod = np.min(np.where(np.array(self.labels) == name)[0])
         return self.models[which_mod]
         
     def make_plot(self,player_query,model_names=None,use_pretty_font=True,dpi = 125):

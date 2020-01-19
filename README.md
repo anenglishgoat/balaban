@@ -52,7 +52,7 @@ You can install via `pip install balaban`.
 
 You can install by cloning this repo: `git clone https://github.com/anenglishgoat/balaban`
 
-Or you can modify this [Colab notebook](https://colab.research.google.com/drive/1zsqN2G_ignfyggxgAI521NfwUULGfU62) by signing in with your Google account.
+Or you can modify this [Colab notebook](https://colab.research.google.com/drive/1CRybRbZXe3Y6AkPh__7jaKCF9O2EaSa6) by signing in with your Google account.
 
 Here is the usage pipeline:
 

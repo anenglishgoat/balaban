@@ -82,8 +82,8 @@ def fit_expected_successes_per_action_model(xS,attempts):
   import numpy as np
   import pymc3 as pm
   kk = (attempts > 0) & (xS > 0)
-  attempts = attempts[kk]
   sp = xS[kk] / attempts[kk]
+  attempts = attempts[kk]
   N = attempts.shape[0]
 
   with pm.Model() as model:
