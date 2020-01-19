@@ -110,7 +110,7 @@ stuff in the background.
     ```
     bos.add_model('Sh', 'Minutes', 'count', 'Shots/90')
     bos.add_model('xG', 'Sh', 'xSpA', 'xG/Shot')
-    bos.add_model(bos.get_model('xG/Shot'), bos.get_model('xG/Shot'), 'xSp90', 'xG/90')
+    bos.add_model(bos.get_model('xG/Shot'), bos.get_model('Shots/90'), 'xSp90', 'xG/90')
     ```
     
 `model_name` is also the character string that will be used as a label on any subsequent plots.
