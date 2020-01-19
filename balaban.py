@@ -1,5 +1,12 @@
 class bosko:
-    def __init__(self, df, league_season_string):
+    def __init__(self, df, league_season_string, query_position = None):
+        import pandas as pd
+        if isinstance(df,str):
+          df = pd.read_csv(df)
+        df['Minutes'] = df['90s'] * 90
+        if query_position is not None:
+          to_keep = [(query_position in str(pos)) for pos in list(df['Pos'])]
+          df = df[to_keep]
         self.df = df
         self.league_season_string = league_season_string
         self.models = []
