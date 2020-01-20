@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="balaban",
-    version="0.0.5",
+    version="0.0.7",
     author="Will Thomson",
     author_email="willthomson1991@gmail.com",
     description="Bayesian hierarchical models for football",

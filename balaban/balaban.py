@@ -5,7 +5,7 @@ class bosko:
           df = pd.read_csv(df)
         df['Minutes'] = df['90s'] * 90
         if query_position is not None:
-          to_keep = [(query_position in str(pos)) for pos in list(df['Pos'])]
+          to_keep = [(query_position == str(pos)[0:2]) for pos in list(df['Pos'])]
           df = df[to_keep]
         self.df = df
         self.league_season_string = league_season_string
