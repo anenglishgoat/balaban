@@ -102,7 +102,7 @@ bos.add_model(a,b,model_type,model_name)
     - if `model_type == 'xSpA'`, `b` is the total number of *attempted* corresponding actions (e.g., key passes, shots)
   * `'xSp90'`
     - combine a count model and an xSpA model to obtain expected successes per 90
-    - if `model_type == 'xSpA'`, `a` is a *previously estimated* xSpA model
+    - if `model_type == 'xSp90'`, `a` is a *previously estimated* xSpA model
     - if `model_type == 'xSp90'`, `b` is a *previously estimated* count model
     - previously estimated models can be retrieved via `bos.get_model(name)`. For example, to estimate an xG90 model:
     
@@ -111,6 +111,12 @@ bos.add_model(a,b,model_type,model_name)
     bos.add_model('xG', 'Sh', 'xSpA', 'xG/Shot')
     bos.add_model(bos.get_model('xG/Shot'), bos.get_model('Shots/90'), 'xSp90', 'xG/90')
     ```
+  * `'adj_pass'`
+    - estimate a length-adjusted pass completion model. It combines two hierarchical binomial models for passes longer than 25 yards and passes shorter than 25 yards. Essentially a very simple expected passing model.
+    - the estimates are the overall passing success rates if the proportion of long passes is set to the average among the cohort.
+    - if `model_type == 'adj_pass'`, `a` is a list of the form `[successful long passes, total successful passes]`
+    - if `model_type == 'xSp90'`, `b` is a list of the form `[attempted long passes, total attempted passes]`
+    
     
 `model_name` is also the character string that will be used as a label on any subsequent plots.
 
