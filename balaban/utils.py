@@ -113,6 +113,54 @@ def fit_expected_successes_per90_model(xSuccess_model,attempts_model):
   return [sl,[],kk,'expected_per90']
 
 
+def fit_adj_pass_model(successes,attempts):
+  ## inputs are two lists in the form:
+  ##       successes = [successful long passes, total successful passes]
+  ##       attempts = [attempted long passes, total attempted passes]
+  ## returns:
+  ##      sl, a numpy array of shape (6000,N) containing 6000 posterior samples of success probabilites (N is the number of players in the
+  ##      original data frame who have registered non-zero expected succcesses)
+  ##      sb, an empty list
+  ##      kk, boolean indicating which players have actually registered non-zero expected successes
+  ##      'adj_pass', character string indicating the model type.
+  import numpy as np
+  import pymc3 as pm
+  import pymc3.distributions.transforms as tr
+  import theano.tensor as tt
+  LonCmp = successes[0];TotCmp = successes[1]
+  LonAtt = attempts[0];TotAtt = attempts[1]
+  kk = LonCmp > 0
+  LonCmp = LonCmp[kk]; LonAtt = LonAtt[kk]; TotCmp = TotCmp[kk]; TotAtt = TotAtt[kk]
+  ShCmp = TotCmp - LonCmp; ShAtt = TotAtt - LonAtt
+  average_long_tendency = np.mean(LonAtt / TotAtt)
+  N = np.sum(kk)
+
+  def logp_ab(value):
+    ''' prior density'''
+    return tt.log(tt.pow(tt.sum(value), -5/2))
+  with pm.Model() as model:
+    # Uninformative prior for alpha and beta
+    ab_short = pm.HalfFlat('ab_short',
+                     shape=2,
+                     testval=np.asarray([1., 1.]))
+    ab_long = pm.HalfFlat('ab_long',
+                     shape=2,
+                     testval=np.asarray([1., 1.]))
+    pm.Potential('p(a_s, b_s)', logp_ab(ab_short))
+    pm.Potential('p(a_l, b_l)', logp_ab(ab_long))
+
+    lambda_short = pm.Beta('lambda_s', alpha=ab_short[0], beta=ab_short[1], shape=N)
+    lambda_long = pm.Beta('lambda_l', alpha=ab_long[0], beta=ab_long[1], shape=N)
+
+    y_short = pm.Binomial('y_s', p=lambda_short, observed=ShCmp, n=ShAtt)
+    y_long = pm.Binomial('y_l', p=lambda_short * lambda_long, observed=LonCmp, n=LonAtt)
+    approx = pm.fit(n=30000)
+  s_sh = approx.sample(6000)['lambda_s']
+  s_lo = approx.sample(6000)['lambda_l']
+  sl = average_long_tendency * s_lo + (1 - average_long_tendency) * s_sh
+  return [sl, [], kk, 'adj_pass']
+
+
 
 def estimate_model(a,b,model_type):
     if model_type == 'count':
@@ -121,6 +169,12 @@ def estimate_model(a,b,model_type):
         out = fit_successes_model(a,b)
     elif model_type == 'xSpA':
         out =  fit_expected_successes_per_action_model(a,b)
+    elif model_type == 'adj_pass':
+        try:
+            out =  fit_adj_pass_model(a,b)
+        except ValueError:
+            print(
+                "Check inputs. The inputs should be two lists of the form [successful long passes, total successful passes] & [attempted long passes, total attempted passes]")
     elif model_type == 'xSp90':
         try:
             out = fit_expected_successes_per90_model(a,b)
@@ -165,7 +219,7 @@ def obtain_player_quantiles(model,player_index):
                   b=(1 - np.mean(model[1][:,2])) * np.mean(model[1][:,0])),
                 bins = 25)
     per90_quantiles = np.quantile(model[0][:,pind],[0.05,0.5,0.95])
-  elif model_type == 'expected_per90':
+  elif (model_type == 'expected_per90') | (model_type == 'adj_pass'):
     pind = np.arange(np.shape(model[2])[0])[model[2]]
     pind = np.where(pind == player_index)[0]
     samps_flat = np.random.choice(model[0].flatten(),size = 5000) ## downsample to make cdf quicker to compute
@@ -176,6 +230,6 @@ def obtain_player_quantiles(model,player_index):
         bins = 25)
     per90_quantiles = np.quantile(model[0][:,pind],[0.05,0.5,0.95])
   else:
-    print("Invalid model type. Must be one of 'count', 'success' or 'expected'")
+    print("Invalid model type. Must be one of 'count', 'success', 'expected', 'expected_per90' or 'adj_pass'")
   return percentile_hist, per90_quantiles
     
