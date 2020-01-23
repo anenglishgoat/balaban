@@ -11,7 +11,7 @@ def fit_counts_model(counts,mins_played):
   ##      kk, boolean indicating which players have actually played minutes
   import numpy as np
   import pymc3 as pm
-  kk = mins_played > 0
+  kk = (mins_played > 0) & np.isfinite(counts)
   mins_played = mins_played[kk]
   counts = counts[kk]
   N = counts.shape[0]
@@ -43,7 +43,7 @@ def fit_successes_model(successes,attempts):
   import pymc3 as pm
   import pymc3.distributions.transforms as tr
   import theano.tensor as tt
-  kk = attempts > 0
+  kk = (attempts > 0) & np.isfinite(successes)
   attempts = attempts[kk]
   successes = successes[kk]
   N = attempts.shape[0]
@@ -129,7 +129,7 @@ def fit_adj_pass_model(successes,attempts):
   import theano.tensor as tt
   LonCmp = successes[0];TotCmp = successes[1]
   LonAtt = attempts[0];TotAtt = attempts[1]
-  kk = LonCmp > 0
+  kk = (LonCmp > 0) & np.isfinite(LonAtt)
   LonCmp = LonCmp[kk]; LonAtt = LonAtt[kk]; TotCmp = TotCmp[kk]; TotAtt = TotAtt[kk]
   ShCmp = TotCmp - LonCmp; ShAtt = TotAtt - LonAtt
   average_long_tendency = np.mean(LonAtt / TotAtt)
