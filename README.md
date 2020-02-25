@@ -113,7 +113,7 @@ bos.add_model(a,b,model_type,model_name)
     ```
   * `'adj_pass'`
     - estimate a length-adjusted pass completion model. It combines two hierarchical binomial models for passes longer than 25 yards and passes shorter than 25 yards. Essentially a very simple expected passing model.
-    - the estimates are the overall passing success rates if the proportion of long passes is set to the average among the cohort.
+    - the estimates are the overall passing success rates if the proportion of long passes is set to the average among the cohort. i.e. it adjusts the pass success rate so that everybody has the same long:short pass ratio -- if you're playing mostly long balls, your pass success will naturally be low. This model attempts to correct for that. 
     - if `model_type == 'adj_pass'`, `a` is a list of the form `[successful long passes, total successful passes]`
     - if `model_type == 'xSp90'`, `b` is a list of the form `[attempted long passes, total attempted passes]`
     
