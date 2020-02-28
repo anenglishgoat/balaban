@@ -111,7 +111,7 @@ The following function call estimates a model:
 ```
 bos.add_model(a,b,model_type,model_name)
 ```
-*Note*: the first time you try to add a model, there might be a delay of a couple of minutes. That's pyMC3 being installed and compiling some stuff.
+*Note*: the first time you try to add a model, there might be a delay of a couple of minutes. That's PyMC3 compiling some stuff.
 
 `model_type` specifies which of the four possible models will be estimated. The options are
   * `'count'`
