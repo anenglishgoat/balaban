@@ -12,7 +12,7 @@ Here's an [example notebook](https://colab.research.google.com/drive/1CRybRbZXe3
 
 **TODO:**
 
-   * ~~There appears to be a way of scraping with Selenium. This is great news and I'll write a function that just requires the league name to pull the latest data from fbref so users don't have to worry about downloading and formatting csv files.~~
+   * ~~There appears to be a way of scraping with Selenium. This is great news and I'll write a function that just requires the league name to pull the latest data from fbref so users don't have to worry about downloading and formatting csv files.~~ This is done now. See the section on [Data Preparation](#data-preparation) below.
    * A few of the models are conjugate (don't require MCMC as they can be computed analytically) so I will write much faster sampling functions for those when I've got some time.
    * Something that will take more time is turning this thing into a Heroku web app. I really want it to be easy to produce the radar for any given player. I also want fans/analysts to acknowledge that quite often you can't really say much about how good a player is at a particular thing via these sort of stats. *When you can't, it's good to know that you can't.* 
 
