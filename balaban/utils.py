@@ -239,12 +239,15 @@ def obtain_player_quantiles(model, player_index):
 
 
 def get_col_dtype(col):
+    import pandas as pd
     """
     Infer datatype of a pandas column, process only if the column dtype is object.
     input:   col: a pandas Series representing a df column.
     """
 
     if col.dtype == "object":
+
+        # try numeric
         try:
             col_new = pd.to_datetime(col.dropna().unique())
             return col_new.dtype

@@ -189,9 +189,9 @@ def scrape_top_five_leagues(path_to_chromedriver, league_names=['epl', 'laliga',
                 tmp_col_names = np.r_[np.array('League'), col_names[np.r_[1, 3, 4, np.arange(7, df.shape[1] - 1)]]]
                 league_df = pd.DataFrame(tmp)
                 league_df.columns = tmp_col_names
+                league_df = league_df[league_df['Player'] != 'Player']
                 league_df = league_df.astype(league_df.apply(get_col_dtype).to_dict())
                 league_df.index = league_df['Player']
-                league_df[league_df['Pos'] != 'Pos']
             elif category == 'shooting':
                 my_table = browser.find_element_by_id('div_stats_shooting')
                 my_table = my_table.find_element_by_xpath("table")
@@ -200,9 +200,9 @@ def scrape_top_five_leagues(path_to_chromedriver, league_names=['epl', 'laliga',
                 tmp = np.array(df)[:, np.r_[1, np.arange(8, df.shape[1] - 1)]]
                 tmp_df = pd.DataFrame(tmp)
                 tmp_df.columns = col_names[np.r_[1, np.arange(8, df.shape[1] - 1)]]
+                tmp_df = tmp_df[tmp_df['Player'] != 'Player']
                 tmp_df = tmp_df.astype(tmp_df.apply(get_col_dtype).to_dict())
-                tmp_df = tmp_df[tmp_df['Pos'] != 'Pos']
-                tmp_df.index = tmp_df['Player']
+                tmp_df = tmp_df.set_index(list(tmp_df)[0])
                 league_df = pd.concat([league_df, tmp_df], axis=1, sort=False)
             else:
                 my_table = browser.find_element_by_id('div_stats_misc')
@@ -213,9 +213,9 @@ def scrape_top_five_leagues(path_to_chromedriver, league_names=['epl', 'laliga',
                 tmp = np.array(df)[:, np.r_[1, np.arange(8, df.shape[1] - 1)]]
                 tmp_df = pd.DataFrame(tmp)
                 tmp_df.columns = col_names[np.r_[1, np.arange(8, df.shape[1] - 1)]]
+                tmp_df = tmp_df[tmp_df['Player'] != 'Player']
                 tmp_df = tmp_df.astype(tmp_df.apply(get_col_dtype).to_dict())
-                tmp_df.index = tmp_df['Player']
-                tmp_df = tmp_df[tmp_df['Pos'] != 'Pos']
+                tmp_df = tmp_df.set_index(list(tmp_df)[0])
                 league_df = pd.concat([league_df, tmp_df], axis=1, sort=False)
 
         all_players_df = pd.concat([all_players_df, league_df])
