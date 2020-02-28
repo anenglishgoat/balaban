@@ -6,8 +6,7 @@ goals per 90, xG per shot, xA per 90). This is done through Bayesian hierarchica
   3. Model-derived 'expected' successes per action (xA per key pass, xG per shot)
   4. Model-derived 'expected' successes per 90 (xA, xG)
   
-If you have suggestions for other models you'd like to see, please let me know via [Twitter](https://twitter.com/AnEnglishGoat). Also do
-so if you've had any success with scraping from fbref.
+If you have suggestions for other models you'd like to see, please let me know via [Twitter](https://twitter.com/AnEnglishGoat).
 
 Here's an [example notebook](https://colab.research.google.com/drive/1CRybRbZXe3Y6AkPh__7jaKCF9O2EaSa6#scrollTo=IdAEV6GHVPt5&forceEdit=true&sandboxMode=true).
 
@@ -64,15 +63,34 @@ Or you can modify this [Colab notebook](https://colab.research.google.com/drive/
 
 Here is the usage pipeline:
 
-**Data preparation**
+### **Data preparation**
 
-Generate a `.csv` file containing the data you want to include. You can download these directly from the 'Squad & Player Stats'
-tabs on the fbref competition pages, like the one for the [Premier League](https://fbref.com/en/comps/9/Premier-League-Stats). I had to
-modify the downloaded `.xls` file a little bit in Excel before saving it as a `.csv`. 
-![alt-text](https://i.imgur.com/cWWjryd.png)
+You have a few options:
+
+#### **Either**:
+
+Generate a `.csv` file containing the data you want to include. You can download these directly from the 'Squad & Player Stats' tabs on the fbref competition pages, like the one for the [Premier League](https://fbref.com/en/comps/9/Premier-League-Stats). I had  to modify the downloaded `.xls` file a little bit in Excel before saving it as a `.csv`. 
+
+<img src="https://i.imgur.com/cWWjryd.png" width="500"/>
+
 I just removed the additional row at the top (which contained extra labels about pass types) and changed the file type to `.csv`.
 
-**Setting up a bosko object**
+Once that's done, you can just pass the filepath of the `.csv` to `balaban.bosko`.
+ 
+#### **Or**:
+
+You can scrape from fbref -- to do so you will need to have downloaded the appropriate `chromedriver.exe` file from [here](https://sites.google.com/a/chromium.org/chromedriver/downloads) and made a note of the filepath. You can then run
+```
+from balaban import scrape_top_five_leagues
+df = scrape_top_five_leagues('path/to/chromedriver.exe', league_names)
+```
+`league_names` is a list that defaults to `['epl', 'laliga', 'bundesliga', 'ligue1', 'seriea']`, but you can pass any subset of those to reduce the time it takes to scrape.
+
+#### **Or**:
+
+Use a pandas dataframe you've generated another way. Just make sure it has columns called 'Player' (player names; *strings*), 'Squad' (team names; *strings*), 'Pos' (playing positions; *strings*; as per fbref, these are one of `DF`, `MF`, `FW`. They can be combined like `MF,FW`), '90s' (number of 90s played, *float*). 
+
+### **Setting up a bosko object**
 
 ```
 import balaban
@@ -87,7 +105,7 @@ This makes a Croatian striker/Python class containing your data that we'll add f
   * `query_position` is an (optional) character string defining a position filter. For example, if it's `'MF'`, the models will only be fitted on players
   for which the string `'MF'` appears in the Pos column.
     
-**Adding models**
+### **Adding models**
 
 The following function call estimates a model:
 ```
@@ -132,7 +150,7 @@ bos.add_model(a,b,model_type,model_name)
   * character strings referring to columns in your input `.csv` or pandas dataframe
   * arrays containing the values themselves (this allows you to use sums of columns or data not in the original csv/data frame)
   
-**Plot the results**
+### **Plot the results**
 
 Once all of the models you're interested in have been estimated, you can plot the results using
 ```
