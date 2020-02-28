@@ -8,7 +8,7 @@ goals per 90, xG per shot, xA per 90). This is done through Bayesian hierarchica
   
 If you have suggestions for other models you'd like to see, please let me know via [Twitter](https://twitter.com/AnEnglishGoat).
 
-Here's an [example notebook](https://colab.research.google.com/drive/1CRybRbZXe3Y6AkPh__7jaKCF9O2EaSa6#scrollTo=IdAEV6GHVPt5&forceEdit=true&sandboxMode=true).
+Here's an [example notebook](https://colab.research.google.com/drive/1CRybRbZXe3Y6AkPh__7jaKCF9O2EaSa6#offline=true&sandboxMode=true).
 
 **TODO:**
 
@@ -59,7 +59,7 @@ You can install via `pip install balaban`.
 
 You can install by cloning this repo: `git clone https://github.com/anenglishgoat/balaban`
 
-Or you can modify this [Colab notebook](https://colab.research.google.com/drive/1CRybRbZXe3Y6AkPh__7jaKCF9O2EaSa6#scrollTo=IdAEV6GHVPt5&forceEdit=true&sandboxMode=true) by signing in with your Google account.
+Or you can modify this [Colab notebook](https://colab.research.google.com/drive/1CRybRbZXe3Y6AkPh__7jaKCF9O2EaSa6#offline=true&sandboxMode=true) by signing in with your Google account.
 
 Here is the usage pipeline:
 
@@ -111,7 +111,7 @@ The following function call estimates a model:
 ```
 bos.add_model(a,b,model_type,model_name)
 ```
-*Note*: the first time you try to add a model, there might be a delay of a couple of minutes. That's pyMC3 being installed and compiling some stuff.
+*Note*: the first time you try to add a model, there might be a delay of a couple of minutes. That's PyMC3 compiling some stuff.
 
 `model_type` specifies which of the four possible models will be estimated. The options are
   * `'count'`
@@ -141,7 +141,7 @@ bos.add_model(a,b,model_type,model_name)
     - estimate a length-adjusted pass completion model. It combines two hierarchical binomial models for passes longer than 25 yards and passes shorter than 25 yards. Essentially a very simple expected passing model.
     - the estimates are the overall passing success rates if the proportion of long passes is set to the average among the cohort. i.e. it adjusts the pass success rate so that everybody has the same long:short pass ratio -- if you're playing mostly long balls, your pass success will naturally be low. This model attempts to correct for that. 
     - if `model_type == 'adj_pass'`, `a` is a list of the form `[successful long passes, total successful passes]`
-    - if `model_type == 'xSp90'`, `b` is a list of the form `[attempted long passes, total attempted passes]`
+    - if `model_type == 'adj_pass'`, `b` is a list of the form `[attempted long passes, total attempted passes]`
     
     
 `model_name` is also the character string that will be used as a label on any subsequent plots.
