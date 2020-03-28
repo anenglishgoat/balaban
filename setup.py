@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="balaban",
-    version="0.0.7",
+    version="0.0.20",
     author="Will Thomson",
     author_email="willthomson1991@gmail.com",
     description="Bayesian hierarchical models for football",
@@ -13,7 +13,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/anenglishgoat/balaban",
     packages=setuptools.find_packages(),
-    install_requires=['importlib.resources', 'numpy', 'pymc3', 'pandas', 'matplotlib'],
+    install_requires=['importlib.resources', 'numpy', 'pymc3', 'pandas', 'matplotlib','selenium'],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",

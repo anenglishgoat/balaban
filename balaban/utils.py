@@ -125,16 +125,16 @@ def fit_adj_pass_model(successes, attempts):
     import pymc3 as pm
     import pymc3.distributions.transforms as tr
     import theano.tensor as tt
-    LonCmp = successes[0];
+    LonCmp = successes[0]
     TotCmp = successes[1]
-    LonAtt = attempts[0];
+    LonAtt = attempts[0]
     TotAtt = attempts[1]
     kk = (LonCmp > 0) & np.isfinite(LonAtt)
-    LonCmp = LonCmp[kk];
-    LonAtt = LonAtt[kk];
-    TotCmp = TotCmp[kk];
+    LonCmp = LonCmp[kk]
+    LonAtt = LonAtt[kk]
+    TotCmp = TotCmp[kk]
     TotAtt = TotAtt[kk]
-    ShCmp = TotCmp - LonCmp;
+    ShCmp = TotCmp - LonCmp
     ShAtt = TotAtt - LonAtt
     average_long_tendency = np.mean(LonAtt / TotAtt)
     N = np.sum(kk)
@@ -254,7 +254,7 @@ def get_col_dtype(col):
         except:
             try:
                 col_new = pd.to_numeric(col.dropna().unique())
-                return col_new.dtype
+                return np.dtype('float64')
             except:
                 try:
                     col_new = pd.to_timedelta(col.dropna().unique())

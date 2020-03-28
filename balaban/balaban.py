@@ -1,6 +1,7 @@
 class bosko:
     def __init__(self, df, league_season_string, query_position=None):
         import pandas as pd
+        import pymc3 as pm
         if isinstance(df, str):
             df = pd.read_csv(df)
         df['Minutes'] = df['90s'] * 90
