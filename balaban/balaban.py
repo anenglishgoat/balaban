@@ -173,7 +173,7 @@ def scrape_top_five_leagues(path_to_chromedriver, league_names=['epl', 'laliga',
     top_5_league_names = list(top_5_league_names[league_matches])
     top_5_league_nums = list(top_5_league_nums[league_matches])
 
-    categories = ['passing', 'shooting', 'misc']
+    categories = ['passing', 'shooting', 'misc','possession','defense','gca','passing_types']
     all_players_df = pd.DataFrame()
     for lnum, lnam in zip(top_5_league_nums, top_5_league_names):
         for category in categories:
@@ -193,20 +193,8 @@ def scrape_top_five_leagues(path_to_chromedriver, league_names=['epl', 'laliga',
                 league_df = league_df[league_df['Player'] != 'Player']
                 league_df = league_df.astype(league_df.apply(get_col_dtype).to_dict())
                 league_df.index = league_df['Player']
-            elif category == 'shooting':
-                my_table = browser.find_element_by_id('div_stats_shooting')
-                my_table = my_table.find_element_by_xpath("table")
-                df = pd.read_html(my_table.get_attribute('outerHTML'))[0]
-                col_names = df.columns.values
-                tmp = np.array(df)[:, np.r_[1, np.arange(8, df.shape[1] - 1)]]
-                tmp_df = pd.DataFrame(tmp)
-                tmp_df.columns = col_names[np.r_[1, np.arange(8, df.shape[1] - 1)]]
-                tmp_df = tmp_df[tmp_df['Player'] != 'Player']
-                tmp_df = tmp_df.astype(tmp_df.apply(get_col_dtype).to_dict())
-                tmp_df = tmp_df.set_index(list(tmp_df)[0])
-                league_df = pd.concat([league_df, tmp_df], axis=1, sort=False)
             else:
-                my_table = browser.find_element_by_id('div_stats_misc')
+                my_table = browser.find_element_by_id('div_stats_'+category)
                 my_table = my_table.find_element_by_xpath("table")
                 df = pd.read_html(my_table.get_attribute('outerHTML'))[0]
                 col_names = np.array(
