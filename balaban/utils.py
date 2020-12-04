@@ -193,10 +193,14 @@ def estimate_model(a, b, model_type):
 def obtain_player_quantiles(model, player_index):
     model_type = model[3]
     import numpy as np
+    
+    pind = np.arange(np.shape(model[2])[0])[model[2]]
+    pind = np.where(pind == player_index)[0]
+    if pind.shape[0] == 0: 
+        return (np.zeros(25), np.linspace(0,1,26)), np.zeros(3)
+
     if model_type == 'count':
         from scipy.stats import gamma
-        pind = np.arange(np.shape(model[2])[0])[model[2]]
-        pind = np.where(pind == player_index)[0]
         percentile_hist = np.histogram(
             gamma.cdf(model[0][:, pind],
                       a=np.mean(model[1][:, 1]) * np.mean(model[1][:, 0]),
@@ -205,8 +209,6 @@ def obtain_player_quantiles(model, player_index):
         per90_quantiles = np.quantile(model[0][:, pind], [0.125, 0.5, 0.875])
     elif model_type == 'success':
         from scipy.stats import beta
-        pind = np.arange(np.shape(model[2])[0])[model[2]]
-        pind = np.where(pind == player_index)[0]
         percentile_hist = np.histogram(
             beta.cdf(model[0][:, pind] / 100,
                      a=np.mean(model[1][:, 0]),
@@ -215,8 +217,6 @@ def obtain_player_quantiles(model, player_index):
         per90_quantiles = np.quantile(model[0][:, pind], [0.05, 0.5, 0.95])
     elif model_type == 'expected':
         from scipy.stats import beta
-        pind = np.arange(np.shape(model[2])[0])[model[2]]
-        pind = np.where(pind == player_index)[0]
         percentile_hist = np.histogram(
             beta.cdf(model[0][:, pind],
                      a=np.mean(model[1][:, 2]) * np.mean(model[1][:, 0]),
@@ -224,8 +224,6 @@ def obtain_player_quantiles(model, player_index):
             bins=25)
         per90_quantiles = np.quantile(model[0][:, pind], [0.05, 0.5, 0.95])
     elif (model_type == 'expected_per90') | (model_type == 'adj_pass'):
-        pind = np.arange(np.shape(model[2])[0])[model[2]]
-        pind = np.where(pind == player_index)[0]
         samps_flat = np.random.choice(model[0].flatten(), size=5000)  ## downsample to make cdf quicker to compute
         sorted_samps = np.sort(samps_flat)
         ecdf = lambda x: np.sum(sorted_samps[:, None] < x, axis=0) / len(sorted_samps)
