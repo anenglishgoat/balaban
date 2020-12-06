@@ -70,9 +70,10 @@ class bosko:
         mins_played = np.array(self.df['Minutes'])
 
         if model_names is not None:
-            which_mods = np.array([np.min(np.where(self.labels == name)[0]) for name in model_names])
-            models = self.models[which_mods]
-            labels = self.labels[which_mods]
+            which_mods = [self.labels.index(m_name) for m_name in model_names]
+            models = [self.models[i] for i in which_mods]
+            labels = [self.labels[i] for i in which_mods]
+
         else:
             models = self.models
             labels = self.labels
